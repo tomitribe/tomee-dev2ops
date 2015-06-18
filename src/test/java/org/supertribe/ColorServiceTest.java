@@ -20,17 +20,25 @@ import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.openejb.loader.JarLocation;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.tomitribe.sabot.Config;
+import org.tomitribe.util.editor.Converter;
 
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -38,10 +46,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import static java.util.Collections.singletonList;
 
@@ -73,6 +77,9 @@ public class ColorServiceTest extends Assert {
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "color.war")
                 .addClasses(ColorService.class, Color.class)
+                .addAsLibraries(JarLocation.jarLocation(Config.class))
+                .addAsLibraries(JarLocation.jarLocation(Converter.class))
+                .addAsResource(new ClassLoaderAsset("dev.properties"), "dev.properties")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"));
     }
 
@@ -120,10 +127,10 @@ public class ColorServiceTest extends Assert {
         final Color color = webClient.path("color/object").accept(MediaType.APPLICATION_JSON).get(Color.class);
 
         assertNotNull(color);
-        assertEquals("orange", color.getName());
-        assertEquals(0xE7, color.getR());
-        assertEquals(0x71, color.getG());
-        assertEquals(0x00, color.getB());
+        assertEquals("blue", color.getName());
+        assertEquals(0, color.getR());
+        assertEquals(0, color.getG());
+        assertEquals(255, color.getB());
     }
 
     /**
@@ -150,7 +157,7 @@ public class ColorServiceTest extends Assert {
 
         final TLSClientParameters params = new TLSClientParameters();
         params.setDisableCNCheck(true);
-        params.setTrustManagers(new TrustManager[] { new X509TrustManager() {
+        params.setTrustManagers(new TrustManager[]{new X509TrustManager() {
             @Override
             public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
                 // no-op
@@ -165,7 +172,7 @@ public class ColorServiceTest extends Assert {
             public X509Certificate[] getAcceptedIssuers() {
                 return null;
             }
-        } });
+        }});
         httpConduit.setTlsClientParameters(params);
 
         return webClient;

@@ -16,9 +16,12 @@
  */
 package org.supertribe;
 
+import org.tomitribe.sabot.Config;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,22 +37,38 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/color")
 public class ColorService {
 
-    private String color;
+    @Inject
+    @Config("color.name")
+    private String name;
+
+    @Inject
+    @Config("color.red")
+    private Integer r;
+
+    @Inject
+    @Config("color.green")
+    private Integer g;
+
+    @Inject
+    @Config("color.blue")
+    private Integer b;
+
+    private String activeColor;
 
     public ColorService() {
-        this.color = "white";
+        this.activeColor = "white";
     }
 
     @GET
     public String getColor() {
-        return color;
+        return activeColor;
     }
 
     @Path("{color}")
     @POST
     @Lock(WRITE)
     public void setColor(@PathParam("color") String color) {
-        this.color = color;
+        this.activeColor = color;
     }
 
     @Path("object")
@@ -57,6 +76,6 @@ public class ColorService {
     @Produces({APPLICATION_JSON})
     @RolesAllowed({"mans-best-friend"})
     public Color getColorObject() {
-        return new Color("orange", 0xE7, 0x71, 0x00);
+        return new Color(name, r, g, b);
     }
 }
