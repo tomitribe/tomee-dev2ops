@@ -45,9 +45,9 @@ public class ColorService {
         return color;
     }
 
-    @Lock(WRITE)
     @Path("{color}")
     @POST
+    @Lock(WRITE)
     public void setColor(@PathParam("color") String color) {
         this.color = color;
     }

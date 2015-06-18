@@ -126,15 +126,6 @@ public class ColorServiceTest extends Assert {
         assertEquals(0x00, color.getB());
     }
 
-//    @Test
-    public void unauthorized() throws Exception {
-
-        final WebClient webClient = WebClient.create(webappUrl.toURI().toASCIIString(), "woodstock", "pass", null);
-        webClient.accept(MediaType.APPLICATION_JSON);
-
-        final Color color = webClient.path("color/object").get(Color.class);
-    }
-
     /**
      * Reusable utility method
      * Move to a shared class or replace with equivalent
@@ -150,6 +141,9 @@ public class ColorServiceTest extends Assert {
         return new String(out.toByteArray());
     }
 
+    /**
+     * Utility method that allows us to test with self-signed certs for https access
+     */
     private WebClient $(final WebClient webClient) {
         final HTTPConduit httpConduit = WebClient.getConfig(webClient).getHttpConduit();
         httpConduit.getClient().setAutoRedirect(true);
