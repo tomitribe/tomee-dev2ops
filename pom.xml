@@ -29,6 +29,25 @@
   <dependencies>
     <dependency>
       <groupId>org.tomitribe</groupId>
+      <artifactId>crest-ssh-connector-api</artifactId>
+      <version>${version.crest-ssh-connector}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.tomitribe</groupId>
+      <artifactId>crest-ssh-connector-rar</artifactId>
+      <version>${version.crest-ssh-connector}</version>
+      <type>rar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.tomitribe</groupId>
+      <artifactId>tomitribe-crest-api</artifactId>
+      <version>${version.crest}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.tomitribe</groupId>
       <artifactId>sabot</artifactId>
       <version>0.7</version>
     </dependency>
@@ -54,7 +73,7 @@
       <artifactId>apache-tomee</artifactId>
       <version>1.7.2</version>
       <scope>provided</scope>
-      <classifier>jaxrs</classifier>
+      <classifier>plus</classifier>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -105,7 +124,14 @@
         <version>${tomee.version}</version>
         <configuration>
           <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
+          <tomeeClassifier>plus</tomeeClassifier>
+          <libs>
+            <lib>org.tomitribe:crest-ssh-connector-api:${version.crest-ssh-connector}</lib>
+            <lib>org.tomitribe:tomitribe-crest-api:${version.crest}</lib>
+          </libs>
+          <apps>
+            <app>org.tomitribe:crest-ssh-connector-rar:${version.crest-ssh-connector}:rar</app>
+          </apps>
         </configuration>
       </plugin>
     </plugins>
@@ -119,5 +145,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <version.crest>0.3</version.crest>
+    <version.crest-ssh-connector>1.0</version.crest-ssh-connector>
   </properties>
 </project>
