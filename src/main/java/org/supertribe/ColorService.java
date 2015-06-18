@@ -16,6 +16,7 @@
  */
 package org.supertribe;
 
+import org.apache.openejb.api.Monitor;
 import org.tomitribe.sabot.Config;
 
 import javax.annotation.security.RolesAllowed;
@@ -35,6 +36,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Lock(READ)
 @Singleton
 @Path("/color")
+@Monitor
 public class ColorService {
 
     @Inject
@@ -60,6 +62,7 @@ public class ColorService {
     }
 
     @GET
+    @Monitor
     public String getColor() {
         return activeColor;
     }
@@ -67,6 +70,7 @@ public class ColorService {
     @Path("{color}")
     @POST
     @Lock(WRITE)
+    @Monitor
     public void setColor(@PathParam("color") String color) {
         this.activeColor = color;
     }
@@ -75,7 +79,13 @@ public class ColorService {
     @GET
     @Produces({APPLICATION_JSON})
     @RolesAllowed({"mans-best-friend"})
+    @Monitor
     public Color getColorObject() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new Color(name, r, g, b);
     }
 }
