@@ -18,6 +18,7 @@ package org.supertribe;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -45,6 +46,7 @@ import java.net.URL;
  *
  */
 @RunWith(Arquillian.class)
+@RunAsClient
 public class ColorServiceTest extends Assert {
 
     /**
@@ -72,7 +74,6 @@ public class ColorServiceTest extends Assert {
      */
     @ArquillianResource
     private URL webappUrl;
-
 
     @Test
     public void postAndGet() throws Exception {
@@ -102,7 +103,7 @@ public class ColorServiceTest extends Assert {
     @Test
     public void getColorObject() throws Exception {
 
-        final WebClient webClient = WebClient.create(webappUrl.toURI());
+        final WebClient webClient = WebClient.create(webappUrl.toURI().toASCIIString(), "snoopy", "pass", null);
         webClient.accept(MediaType.APPLICATION_JSON);
 
         final Color color = webClient.path("color/object").get(Color.class);

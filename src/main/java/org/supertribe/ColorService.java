@@ -16,6 +16,7 @@
  */
 package org.supertribe;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
 import javax.ws.rs.GET;
@@ -54,6 +55,7 @@ public class ColorService {
     @Path("object")
     @GET
     @Produces({APPLICATION_JSON})
+    @RolesAllowed({"MansBestFriend"})
     public Color getColorObject() {
         return new Color("orange", 0xE7, 0x71, 0x00);
     }
