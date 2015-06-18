@@ -55,7 +55,7 @@ public class ColorService {
     @Path("object")
     @GET
     @Produces({APPLICATION_JSON})
-    @RolesAllowed({"MansBestFriend"})
+    @RolesAllowed({"mans-best-friend"})
     public Color getColorObject() {
         return new Color("orange", 0xE7, 0x71, 0x00);
     }

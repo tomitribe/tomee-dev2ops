@@ -11,12 +11,15 @@
       <url-pattern>/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-      <role-name>**</role-name>
+      <role-name>*</role-name>
     </auth-constraint>
     <user-data-constraint>
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
+  <security-role>
+    <role-name>peanuts</role-name>
+  </security-role>
   <login-config>
     <auth-method>BASIC</auth-method>
   </login-config>

@@ -115,6 +115,15 @@ public class ColorServiceTest extends Assert {
         assertEquals(0x00, color.getB());
     }
 
+//    @Test
+    public void unauthorized() throws Exception {
+
+        final WebClient webClient = WebClient.create(webappUrl.toURI().toASCIIString(), "woodstock", "pass", null);
+        webClient.accept(MediaType.APPLICATION_JSON);
+
+        final Color color = webClient.path("color/object").get(Color.class);
+    }
+
     /**
      * Reusable utility method
      * Move to a shared class or replace with equivalent
