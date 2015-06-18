@@ -53,6 +53,22 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <defaultGoal>install tomee:exec</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.openejb.maven</groupId>
+        <artifactId>tomee-maven-plugin</artifactId>
+        <version>${tomee.version}</version>
+        <configuration>
+          <tomeeVersion>${tomee.version}</tomeeVersion>
+          <tomeeClassifier>jaxrs</tomeeClassifier>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <properties>
     <tomee.version>1.7.2</tomee.version>
     <openejb.javaee.api>6.0-6</openejb.javaee.api>
