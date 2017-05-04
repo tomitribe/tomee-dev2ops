@@ -1,0 +1,4 @@
+#!/bin/bash
+echo git checkout 914c550d732dcd226b032553cfc9892c405332ab
+git checkout 914c550d732dcd226b032553cfc9892c405332ab
+git diff 2e78f4fcb88d372e56a390626350df98e58644b4

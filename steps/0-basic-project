@@ -1,0 +1,3 @@
+#!/bin/bash
+echo git checkout b5ff8e5661cf8d6282c9e8f49e2ac86a30c72d4b
+git checkout b5ff8e5661cf8d6282c9e8f49e2ac86a30c72d4b
